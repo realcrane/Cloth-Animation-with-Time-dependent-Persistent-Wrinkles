@@ -29,10 +29,6 @@ std::vector<AccelStruct*> create_accel_structs(const std::vector<Mesh*>& meshes,
 {
     std::vector<AccelStruct*> accs(meshes.size());
 
-    //std::cout << "create_accel_structs" << std::endl;
-
-    //std::cout << "Mesh size: " << meshes.size() << std::endl;
-
     for (int m = 0; m < meshes.size(); m++) {
         accs[m] = new AccelStruct(*meshes[m], ccd);
     }

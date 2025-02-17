@@ -56,8 +56,6 @@ struct kDOP18 {
 
 	kDOP18(const kDOP18& other) {
 
-		//std::cout << "Copy Constructor" << std::endl;
-
 		for (unsigned int i = 0; i < 18; ++i)
 			this->dist[i] = other.dist[i];
 
@@ -85,8 +83,6 @@ struct kDOP18 {
 	
 	kDOP18(kDOP18&& other) noexcept {
 
-		//std::cout << "Move Constructor" << std::endl;
-
 		for (unsigned int i = 0; i < 18; ++i) {
 			this->dist[i] = other.dist[i];
 			//other.dist[i] = 0.0;
@@ -99,8 +95,6 @@ struct kDOP18 {
 	//kDOP18& operator=(kDOP18&& other) = default;
 
 	kDOP18& operator=(kDOP18&& other) noexcept {
-
-		//std::cout << "Move Assignment" << std::endl;
 
 		if (this == &other) return *this;
 

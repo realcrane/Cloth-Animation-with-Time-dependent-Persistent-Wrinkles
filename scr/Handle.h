@@ -75,16 +75,8 @@ struct Handle {
 	// Destructor
 	virtual ~Handle() {
 
-		//std::cout << "Handle destructor" << std::endl;
-
 		this->node = nullptr;
 		this->anchor_pos = Eigen::Vector3d::Zero();
-
-		//if (!motions.empty()) {
-		//	for(int i = 0; i < motions.size(); ++i)
-		//		delete motions[i];
-		//	motions.clear();
-		//}
 				
 	}
 
