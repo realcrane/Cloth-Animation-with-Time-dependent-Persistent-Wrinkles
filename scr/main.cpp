@@ -146,136 +146,14 @@ void cuda_mv() {
 	cudaFree(dY);
 }
 
-void sum_number(int& a) {
-
-	//std::cout << a << std::endl;
-
-	std::cout << "thread Id: " << std::this_thread::get_id() << std::endl;
-
-	for (int i = 0; i < 10; ++i) {
-		a += i;
-		
-		//for (int j = 0; j < 10; ++j) {
-		//	std::this_thread::sleep_for(std::chrono::milliseconds(1));
-		//}
-	}
-		
-}
-
-void seq_sum() {
-
-	int as[3];
-
-	for (unsigned int i = 0; i < 3; ++i) {
-		sum_number(as[i]);
-	}
-
-
-}
-
-void sum_paralle() {
-
-	std::vector<std::thread> threads(10);
-	std::vector<int> as(10);
-
-	for (unsigned int i = 0; i < 10; ++i) {
-		threads[i] = std::thread(sum_number, std::ref(as[i]) );
-	}
-
-	for (auto& entry : threads)
-		entry.join();
-}
-
-void sum_numbers(std::vector<double>::iterator itr, int cnt, double& sum) {
-	for (int i = 0; i < cnt; ++i) {
-		sum += itr[i];
-	}
-}
-
-void test_range_view() {
-
-	//std::vector<double> a {1.0, 2.0, 3.0};
-	//std::vector<double> b {4.0, 5.0, 6.0};
-
-	//std::cout << "Before concat" << std::endl;
-
-	//for (auto a_v : a) {
-	//	std::cout << a_v << std::endl;
-	//}
-
-	//a.insert(a.end(), b.begin(), b.end());
-
-	//std::cout << "After concat" << std::endl;
-
-	//for (auto a_v : a) {
-	//	std::cout << a_v << std::endl;
-	//}
-
-	//std::cout << "Joint View" << std::endl;
-
-	//std::vector<std::vector<double>> vectors_to_join = {a, b};
-
-	//auto a_join = std::ranges::join_view(vectors_to_join);
-
-	//for (auto a_s : a_join)
-	//	std::cout << a_s << std::endl;
-
-	//std::cout << *a_join.begin() << std::endl;
-	//std::cout << a_join.back() << std::endl;
-
-
-
-	sparse_M spar_mat(3, 3);
-
-	std::vector<std::vector<sparse_tri>> spar_mat_eles;
-
-	spar_mat_eles.push_back(std::vector<sparse_tri>());
-	spar_mat_eles.push_back(std::vector<sparse_tri>());
-
-	spar_mat_eles[0].emplace_back(sparse_tri(0, 0, 1.0));
-
-	spar_mat_eles[1].emplace_back(sparse_tri(1, 1, 2.0));
-	spar_mat_eles[1].emplace_back(sparse_tri(2, 2, 3.0));
-
-	//spar_mat_eles[0].insert(spar_mat_eles[0].end(), spar_mat_eles[1].begin(), spar_mat_eles[1].end());
-
-	//spar_mat.setFromTriplets(spar_mat_eles[0].begin(), spar_mat_eles[0].end());
-
-	auto spar_mat_eles_view = std::ranges::join_view(spar_mat_eles);
-	
-	spar_mat.setFromTriplets(spar_mat_eles_view.begin(), spar_mat_eles_view.end());
-
-	std::cout << spar_mat << std::endl;
-}
 
 
 int main(void)
 {	
-	
-	//funcCaller();
-
-	//Eigen::initParallel();
-
-	//Eigen::setNbThreads(20);
 
 	Simulation sim_session{ std::filesystem::path(R"(.\SimConfig.json)") };
 
-	//sim_session.clothes[0].mesh.mesh_info();
-
-	//sim_session.render_mesh();
-
 	sim_session.physics();
-
-	//MY_TIMING(sim_session.physics())
-
-	//gl_render();
-
-
-
-
-
-	//motion_binary_to_mesh();
-
 
 	return 0;
 }
