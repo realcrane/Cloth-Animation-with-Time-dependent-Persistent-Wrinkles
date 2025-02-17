@@ -1,61 +1,95 @@
 {
-  "Cloth_Mesh": "./mesh_in/HiRes_Pants.obj",
-  "Obstacle_Meshes": [ "./mesh_in/body_sit_HiRes.obj" ],
-  "Motion_Path": "./Motion/Motion_3.json",
-  "Force_Log_Path": "./logs/Log_Net_Force_Tensile_Release.txt",
-  "Tensile_Stress_Log_Path": "./logs/Log_Tensile_Stress_Rate.txt",
-  "Bend_Stress_Log_Path": "./logs/Log_Bend_Friction_Stress_Rate.txt",
-  "Gravity": -9.8,
-  "Step_Size": 0.001,
-  "Density": 0.15,
-  "Stretching_Stiffness": [ 100.0, 0.2, 100.0, 20.0 ],
-  "Bending_Stiffness": 1e-6,
-  "Tensile_Friction_Parameter": {
-    "C1": 10.0,
-    "C2": 1.0,
-    "C3": 0.2,
-    "k_0": 500.0,
-    "k_inf": 1e-4,
-    "k_c": 500.0,
-    "v_s": 50.0,
-    "eta": 0.0,
-    "strain_max_0": [ 0.01, 0.01, 0.01 ],
-    "strain_max_inf": [ 0.05, 0.05, 0.05 ]
+  "Environment": {
+    "Gravity": [ 0.0, 0.0, -9.8 ],
+    "Handle_Stiffness": 1e5
   },
-  "Tensile_Plastic_Parameter": {
-    "k_hardening": [ 200.0, 200.0, 5.0 ],
-    "k_hardening_0": [ 0.99, 0.99, 0.99 ],
-    "k_hardening_tao": [ 30.0, 30.0, 30.0 ],
-    "strain_yield_ori": [ 0.07, 0.07, 0.07 ]
+  "Clothes": {
+    "MeshPath": "./meshes/Pants.obj",
+    "Density": 0.1,
+    "Bending": 1e-6,
+    "Stretching": [ 200.0, 0.2, 200.0, 20.0 ],
+    "Damping": 0.0,
+    "Is_Bending_Plastic": true,
+    "Is_Debug_Bending_Plastic": false,
+    "Is_Bending_Friction": true,
+    "Is_Debug_Bending_Friction": false,
+    "Is_Tensile_Plastic": false,
+    "Is_Debug_Tensile_Plastic": false,
+    "Is_Tensile_Friction": false,
+    "Is_Debug_Tensile_Friction": false,
+    "Is_Reset_Stretch": true,
+    "Is_Handle_On": true,
+    "Tensile_Plastic": {
+      "k_hardening": [ 10.0, 10.0, 5.0 ],
+      "k_hardening_0": [ 0.5, 0.5, 0.5 ],
+      "tao": [ 30.0, 30.0, 30.0 ],
+      "yield_ori": [ 0.033, 0.033, 0.033 ]
+    },
+    "Tensile_Friction": {
+      "k": [ 200.0, 200.0, 5.0 ],
+      "tao": [ 30.0, 30.0, 30.0 ],
+      "thres_0": [ 0.005, 0.005, 0.005 ],
+      "thres_inf": [ 0.05, 0.05, 0.05 ]
+    },
+    "Bend_Plastic": {
+      "k_hardening": 5e-6,
+      "k_hardening_0": 0.99,
+      "tao": 30.0,
+      "yield_ori": 1.8
+    },
+    "Bend_Friction": {
+      "k": 4e-6,
+      "thres_0": 0.1,
+      "thres_inf": 1.2,
+      "tao": 30.0
+    },
+    "Stable": {
+      "Is_Stable": false,
+      "Stable_Steps": [ 500 ]
+    },
+    "MeshSavePath": "./{path_to_save_mesh}/cloth.obj",
+    "BinarySavePath": "./{path_of_save_binaries}/trousers.bin",
+    "BinaryLoadPath": "./{path_of_loat_binaries}/cloth.bin"
   },
-  "Bend_Friction_Parameter": {
-    "C1": 1e-6,
-    "C2": 0.8,
-    "C3": 0.2,
-    "k_0": 1e-6,
-    "k_inf": 2e-9,
-    "k_c": 7e-7,
-    "v_s": 0.1,
-    "eta": 0.0,
-    "strain_max_0": 0.1,
-    "strain_max_inf": 0.1,
-    "strain_tao": 30.0
+  "IncludeObstacle": true,
+  "Obstacles": [
+    {
+      "MeshPath": "./meshes/body_lift_leg_HiRes.obj",
+      "Is_Load_Binary": true,
+      "Prev_Obs_Binary_Path": "./{path_of_obs_binary_previous_step}/body_49.dat",
+      "Obs_Binary_Path": "./{path_of_obs_binary}/body_50.dat",
+      "Density": 1e3,
+      "Is_Save": false,
+      "MeshSavePath": "",
+      "Is_Motion": false,
+      "Collision_Start": 0,
+      "Collision_End": 1000,
+      "Is_Deform": true,
+      "Deform_Binary_Path": "./{path_of_body_motion_binaries}/body_1.dat"
+    }
+  ],
+  "Step_Number": 100,
+  "Initial_Step": 0,
+  "Save_Mesh_Per_Steps": 1,
+  "Time_Step": 0.001,
+  "Collision": {
+    "Is_Collision": true,
+    "Is_Proximity": true,
+    "CollisionThickness": 0.001,
+    "RepulsionThickness": 0.005,
+    "RepulsionStiffness": 3e3,
+    "ClothFrictionCoeff": 0.01,
+    "ClothObsFrictionCoeff": 0.01
   },
-  "Bend_Plastic_Parameter": {
-    "k_hardening": 1e-6,
-    "k_hardening_0": 0.99,
-    "k_hardening_tao": 30.0,
-    "strain_yield_ori": 3.14
-  },
-  "Dahl_Parameter": {
-    "stretch_a": 0.01,
-    "stretch_b": 0.02,
-    "stretch_tao": 0.1,
-    "bending_a": 5e-6,
-    "bending_b": 3e-7,
-    "bending_tao": 1.0
-  },
-  "Repulsion_Thickness": 0.005,
-  "Repulsion_Stiffness": 3e3,
-  "Steps": 1550
+  "Is_Elapse": false,
+  "Elapse_Start": 0,
+  "Elapse_End": 10,
+  "Elapse_Duration": 600.0,
+  "Profile_Time": true,
+  "Profile_Solver": false,
+  "Print_Step": true,
+  "Is_Save_Mesh": true,
+  "Is_Save_Binary": false,
+  "Is_Load_Binary": true,
+  "Solver_Type": "Eigen"
 }
