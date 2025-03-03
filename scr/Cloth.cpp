@@ -531,17 +531,17 @@ void Cloth::cal_bend(std::vector<sparse_tri>& Cloth_Jacob, Eigen::VectorXd& Clot
 
 		if (is_bending_plastic) hardening_plastic(edge->friction_plastic_state, bend_plastic_parameters, material.bending, theta, dt);
 
-		Eigen::Matrix<double, 12, 12> Jaco = -material.bending * ((edge->l * edge->l) / (4.0 * a)) * (dtheta * dtheta.transpose());	// Jacobian
+		Eigen::Matrix<double, 12, 12> Jaco = -material.bending * ((edge->l * edge->l) / a) * (dtheta * dtheta.transpose());	// Jacobian (Find a bug: the bending stiffness in the paper should be devided by 4)
 
-		Eigen::Vector<double, 12> Force = -material.bending * ((edge->l * edge->l) / (4.0 * a)) * (theta - edge->friction_plastic_state.plastic_strain) * dtheta;	// Force
+		Eigen::Vector<double, 12> Force = -material.bending * ((edge->l * edge->l) / a) * (theta - edge->friction_plastic_state.plastic_strain) * dtheta;	// Force (Find a bug: the bending stiffness in the paper should be devided by 4)
 
 		// ** Dwell Friction **
 
 		if (is_bending_friction) {
 			double strain_var = dwell_friction(edge->friction_plastic_state, bend_friction_parameters, theta, dt);
 
-			Jaco += -(bend_friction_parameters.k * ((edge->l * edge->l) / (4.0 * a)) * (dtheta * dtheta.transpose()));
-			Force += -(bend_friction_parameters.k * ((edge->l * edge->l) / (4.0 * a)) * strain_var) * dtheta;
+			Jaco += -(bend_friction_parameters.k * ((edge->l * edge->l) / a) * (dtheta * dtheta.transpose())); // Find a bug: the bending friction stiffness in the paper should be devided by 4
+			Force += -(bend_friction_parameters.k * ((edge->l * edge->l) / a) * strain_var) * dtheta; 	// Find a bug: the bending friction stiffness in the paper should be devided by 4
 		}
 
 		if ((is_bending_plastic && is_debug_bending_plastic) ||
