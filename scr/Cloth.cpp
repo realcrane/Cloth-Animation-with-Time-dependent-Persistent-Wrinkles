@@ -194,7 +194,7 @@ void hardening_plastic(FricPlasState& state, const PlasticParameter& plastic_par
 
 	//if (is_debug) std::cout << "Is Same Direction: " << (is_plastic_same_direction ? "Same Direction" : "Diff Direction") << std::endl;
 
-	if (is_yield) state.yield_t += dt;
+	state.yield_t += dt;
 
 	if (is_yield && !is_plastic_same_direction) state.yield_t = 0.0;
 
